@@ -9,7 +9,8 @@ let content = document.getElementById('content');
     constructor(props){
       super(props);
       this.state = {
-        numero: 0, 
+        numero: 0,
+        mostrar: true 
       };
     }
 
@@ -17,11 +18,26 @@ let content = document.getElementById('content');
       this.setState({numero: this.state.numero + 1});
     }
 
+    restar(){
+      this.setState({numero: this.state.numero - 1});
+    }
+
+    montar(){
+      this.setState({mostrar: true});
+    }
+
+    desmontar(){
+      this.setState({mostrar: false});
+    }
+
     render(){
       return (
         <div>
-          <MiLabel numero={ this.state.numero } />
-          <MiBoton incrementador={this.sumar.bind(this)} />
+           { this.state.mostrar && <MiLabel numero={ this.state.numero } /> }
+          { this.state.mostrar && <MiBoton alterador={this.sumar.bind(this)} accion={"Sumar"} /> }
+          { this.state.mostrar && <MiBoton alterador={this.restar.bind(this)} accion={"Restar"} /> }
+          <MiBoton alterador={this.montar.bind(this)} accion={"Mostrar"} />
+          { this.state.mostrar && <MiBoton alterador={this.desmontar.bind(this)} accion={"Ocultar"} /> }
         </div>       
       );
     }
@@ -38,9 +54,21 @@ let content = document.getElementById('content');
   class MiBoton extends Component {
     render(){
       return (
-          <button onClick={this.props.incrementador}>+</button>
+          <button onClick={this.props.alterador}>{ this.props.accion }</button>
+      );
+    }
+  }
+
+  class Texto extends Component {
+    render(){
+      return (
+          <h1>Texto</h1>
       );
     }
   }
 
 ReactDOM.render(<SimpleComponent/>, content);
+
+// setTimeout(function(){
+//   ReactDOM.unmountComponentAtNode(content)
+// }, '3000');
